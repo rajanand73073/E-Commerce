@@ -11,9 +11,9 @@ const generateToken = async (userId: String) => {
     if (!user) {
       throw new APIError(404, "User not found");
     }
-    const accessToken = user.generateToken();
+    const Token = user.generateToken();
     await user.save({ validateBeforeSave: false });
-    return { accessToken };
+    return Token;
   } catch (error) {
     throw new APIError(
       500,
@@ -40,9 +40,7 @@ const registerUser = asyncHandler(async (req, res) => {
   const existedUser = await User.findOne({
     $or: [{ username }, { email }],
   });
-  console.log("user", existedUser);
-
-  console.log("Request body:", req.body);
+  console.log("Existeduser", existedUser);
 
   if (existedUser) {
     throw new APIError(409, "User With email or Username already exist");
@@ -54,9 +52,7 @@ const registerUser = asyncHandler(async (req, res) => {
     username: username,
   });
 
-  const createdUser = await User.findById(user._id).select(
-    "-password -refreshToken"
-  );
+  const createdUser = await User.findById(user._id).select("-password");
   if (!createdUser) {
     throw new APIError(500, "something Went wrong");
   }
@@ -64,7 +60,6 @@ const registerUser = asyncHandler(async (req, res) => {
     .status(201)
     .json(new ApiResponse(200, createdUser, "User registered Succesfully"));
 });
-
 
 const loginUser = asyncHandler(async (req, res) => {
   // steps to be performed when login
@@ -94,9 +89,7 @@ const loginUser = asyncHandler(async (req, res) => {
   const Token = await generateToken(user._id as String);
   console.log(Token);
 
-  const loggedInuser = await User.findById(user._id).select(
-    "-password "
-  );
+  const loggedInuser = await User.findById(user._id).select("-password ");
 
   console.log(loggedInuser);
   console.log("Headers:", req.headers);
@@ -109,7 +102,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .cookie("accessToken", Token)
+    .cookie("Token", Token, options)
     .json(
       new ApiResponse(
         200,
@@ -122,5 +115,4 @@ const loginUser = asyncHandler(async (req, res) => {
     );
 });
 
-
-export { registerUser,loginUser };
+export { registerUser, loginUser };

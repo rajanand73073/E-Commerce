@@ -3,13 +3,15 @@ import {registerAdmin,adminLogin} from "../controllers/AdminController/Admin.con
 import { verifyJWTAdmin} from "../middleware/auth.middleware"
 import { deleteCategory, listCategories, manageCategory, updateCategory } from "../controllers/AdminController/Category.controller"
 import { salesCategoryWise, topSellingProducts, worstSellingProducts } from "../controllers/AdminController/SalesReport.controller"
+import { addProduct } from "../controllers/AdminController/Products.controller"
 
 
 const router = Router()
 
 router.route('/adminRegister').post(registerAdmin)
 router.route('/adminLogin').post(adminLogin)
-router.route('/manageCategory').post(verifyJWTAdmin,manageCategory)
+router.route('/addprod').post(verifyJWTAdmin,addProduct)
+router.route('/addCategory').post(verifyJWTAdmin,manageCategory)
 router.route('/updateCategory').patch(verifyJWTAdmin,updateCategory)
 router.route('/deleteCategory').patch(verifyJWTAdmin,deleteCategory)
 router.route('/listCategories').get(verifyJWTAdmin,listCategories)

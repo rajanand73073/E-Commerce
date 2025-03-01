@@ -4,8 +4,6 @@ import { asyncHandler } from "../utils/asyncHandler";
 import jwt from "jsonwebtoken";
 import { User } from "../models/User.model";
 
-
-
 interface DecodedToken {
   _id: string;
   role: string;
@@ -19,8 +17,10 @@ interface AuthRequest extends Request {
 export const verifyJWTUser = asyncHandler(
   async (req: AuthRequest, _: Response, next: NextFunction) => {
     try {
-      let Token = req.cookies?.Token || req.header("Authorization")?.replace("Bearer ", "");
-
+      let Token =
+        req.cookies?.Token ||
+        req.header("Authorization")?.replace("Bearer ", "");
+      console.log("Token", Token);
 
       if (!Token) {
         throw new APIError(401, "Unauthorized request");
@@ -31,9 +31,7 @@ export const verifyJWTUser = asyncHandler(
         process.env.ACCESS_TOKEN_SECRET as string
       ) as DecodedToken;
 
-      const user = await User.findById(decodedToken._id).select(
-        "-password "
-      );
+      const user = await User.findById(decodedToken._id).select("-password ");
 
       if (!user) {
         throw new APIError(401, "Invalid Access Token");
@@ -53,7 +51,9 @@ export const verifyJWTAdmin = asyncHandler(
     try {
       console.log("Raw Token:", req.cookies?.Token);
 
-      let Token = req.cookies?.Token || req.header("Authorization")?.replace("Bearer ", "");
+      let Token =
+        req.cookies?.Token ||
+        req.header("Authorization")?.replace("Bearer ", "");
 
       if (!Token) {
         throw new APIError(401, "Unauthorized request - Token not provided");
@@ -63,15 +63,13 @@ export const verifyJWTAdmin = asyncHandler(
       Token = decodeURIComponent(Token);
       console.log("Decoded Admin Token:", Token); // Debugging log
 
-      
       const decodedToken = jwt.verify(
         Token,
         process.env.ACCESS_TOKEN_SECRET as string
       ) as DecodedToken;
 
+      console.log("decodedToken", decodedToken);
 
-      console.log("decodedToken",decodedToken);
-      
       const admin = await User.findById(decodedToken._id).select("-password");
 
       if (!admin) {

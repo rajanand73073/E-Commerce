@@ -1,9 +1,18 @@
 import {Router}  from "express"
-import { registerUser } from "../controllers/UserController/User.controller"
+import { loginUser, registerUser } from "../controllers/UserController/User.controller"
+import { verifyJWTUser } from "../middleware/auth.middleware"
+import { getAllProducts, getProductById } from "../controllers/UserController/Product.controller"
+import { getOrderHistory, placeOrder } from "../controllers/UserController/Order.controller"
 
 const router = Router()
 
-router.route('/register').post(registerUser)
+router.route('/userRegister').post(registerUser)
+router.route('/userLogin').post(loginUser)
+router.route('/getAllProducts').post(verifyJWTUser,getAllProducts)
+router.route('/getProductById').get(verifyJWTUser,getProductById)
+
+
+
 
 
 

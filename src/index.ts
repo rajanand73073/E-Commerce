@@ -4,6 +4,9 @@ import { DB_NAME } from "./constants";
 import connectDB from "./db/index";
 import { app } from "./app";
 
+
+
+
 dotenv.config({
   path: "./.env",
 });
