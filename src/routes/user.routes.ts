@@ -2,7 +2,7 @@ import {Router}  from "express"
 import { loginUser, registerUser } from "../controllers/UserController/User.controller"
 import { verifyJWTUser } from "../middleware/auth.middleware"
 import { getAllProducts, getProductById } from "../controllers/UserController/Product.controller"
-import { getOrderHistory, placeOrder } from "../controllers/UserController/Order.controller"
+import { getOrderHistory, placeOrder } from "../controllers/orderController/Order.controller"
 
 const router = Router()
 

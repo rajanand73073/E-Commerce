@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { verifyJWTAdmin, verifyJWTUser } from "../middleware/auth.middleware";
-import { getOrderHistory, placeOrder, updateOrderStatus } from "../controllers/UserController/Order.controller";
+import { getOrderHistory, placeOrder, updateOrderStatus } from "../controllers/orderController/Order.controller";
 
 
 
