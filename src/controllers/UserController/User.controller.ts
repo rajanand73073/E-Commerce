@@ -91,11 +91,11 @@ const loginUser = asyncHandler(async (req, res) => {
     throw new APIError(404, "Invalid Password");
   }
 
-  const accessToken = await generateToken(user._id as String);
-  console.log(accessToken);
+  const Token = await generateToken(user._id as String);
+  console.log(Token);
 
   const loggedInuser = await User.findById(user._id).select(
-    "-password -refreshToken"
+    "-password "
   );
 
   console.log(loggedInuser);
@@ -109,13 +109,13 @@ const loginUser = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .cookie("accessToken", accessToken)
+    .cookie("accessToken", Token)
     .json(
       new ApiResponse(
         200,
         {
           user: loggedInuser,
-          accessToken,
+          Token,
         },
         "User LoggedIn Successfully"
       )

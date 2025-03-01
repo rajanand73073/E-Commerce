@@ -40,17 +40,18 @@ UserSchema.methods.isPasswordCorrect = async function (password: string): Promis
 
 
 UserSchema.methods.generateToken = function(){
-if (!process.env.ACCESS_TOKEN_SECRETS) {
+if (!process.env.ACCESS_TOKEN_SECRET) {
     throw new Error("ACCESS_TOKEN_SECRETS is not defined");
 }
-return jwt.sign({
+return jwt.sign(
+    {
         _id: this._id,
         email: this.email,
         username: this.username,
         fullname: this.fullname
     },
-    process.env.ACCESS_TOKEN_SECRETS,
-    { expiresIn: process.env.ACCESS_TOKEN_EXPIRY ? parseInt(process.env.ACCESS_TOKEN_EXPIRY, 10) : undefined }
+    process.env.ACCESS_TOKEN_SECRET as string,
+    { expiresIn: process.env.ACCESS_TOKEN_EXPIRY || "1d" } as jwt.SignOptions
 )
 }
 

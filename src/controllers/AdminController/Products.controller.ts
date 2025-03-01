@@ -17,8 +17,6 @@ import { Product } from "../../models/Product.model";
 
 
 
-
-
     const updateProduct = asyncHandler(async (req, res) => {
       const { id } = req.params;
       const { name, price, category, stock } = req.body;

@@ -7,10 +7,9 @@ import cookieParser from "cookie-parser";
 // import { DB_NAME } from "../constants";
 import connectDB from "./db/index";
 import userRoutes from "./routes/user.routes";
+import adminRoutes from "./routes/admin.routes"
 
-dotenv.config({
-  path: "./.env",
-});
+
 
 const app = express();
 
@@ -28,6 +27,8 @@ app.use(cookieParser());
 
 // Routes declaration
 app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/admin", adminRoutes);
+
 
 
 
